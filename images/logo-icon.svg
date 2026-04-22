@@ -1,0 +1,13 @@
+<svg width="88" height="88" viewBox="0 0 88 88" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="cubeMobile" x1="18" y1="16" x2="67" y2="63" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#45C4FF"/>
+      <stop offset="0.55" stop-color="#7E76FF"/>
+      <stop offset="1" stop-color="#F244B7"/>
+    </linearGradient>
+  </defs>
+  <path d="M44 12 70 27 44 42 18 27 44 12Z" fill="url(#cubeMobile)"/>
+  <path d="M18 27 44 42 44 71 18 56V27Z" fill="#8F59FF"/>
+  <path d="M70 27 44 42 44 71 70 56V27Z" fill="#4C9DFF"/>
+  <path d="M31 28 44 35 57 28 44 21 31 28Z" fill="#FFF8FF"/>
+</svg>
