@@ -27,27 +27,28 @@
           <form class="booking-form">
             <label class="field">
               <span class="sr-only">Name</span>
-              <input type="text" name="username" placeholder="Enter your name" />
+              <input type="text" name="username" placeholder="Enter your name" autocomplete="name" required />
             </label>
 
             <label class="field">
               <span class="sr-only">Email</span>
-              <input type="email" name="email" placeholder="Enter your Email" />
+              <input type="email" name="email" placeholder="Enter your Email" autocomplete="email" required />
             </label>
 
             <div class="option-row">
-              <label><input type="radio" name="gender" checked /> Male</label>
-              <label><input type="radio" name="gender" /> Female</label>
+              <label><input type="radio" name="gender" value="Male" checked /> Male</label>
+              <label><input type="radio" name="gender" value="Female" /> Female</label>
             </div>
 
             <div class="check-grid">
-              <label><input type="checkbox" name="equipment" /> Weights</label>
-              <label><input type="checkbox" name="equipment" /> Dumbells</label>
-              <label><input type="checkbox" name="equipment" /> Ropes</label>
-              <label><input type="checkbox" name="equipment" /> Shirts</label>
+              <label><input type="checkbox" name="equipment" value="Weights" /> Weights</label>
+              <label><input type="checkbox" name="equipment" value="Dumbbells" /> Dumbbells</label>
+              <label><input type="checkbox" name="equipment" value="Ropes" /> Ropes</label>
+              <label><input type="checkbox" name="equipment" value="Shirts" /> Shirts</label>
             </div>
 
-            <button type="submit">Book your equipment</button>
+            <button type="submit">Preview equipment request</button>
+            <p class="form-status" role="status" aria-live="polite"></p>
           </form>
         </div>
       </section>
@@ -101,5 +102,22 @@
         </article>
       </section>
     </main>
+    <script>
+      document.querySelectorAll(".booking-form").forEach((form) => {
+        form.addEventListener("submit", (event) => {
+          event.preventDefault();
+          const status = form.querySelector(".form-status");
+          const data = new FormData(form);
+          const equipment = data.getAll("equipment");
+          if (!equipment.length) {
+            status.textContent = "Choose at least one equipment item to preview your request.";
+            return;
+          }
+          status.textContent = "Demo preview only — no booking was sent. Request for " +
+            data.get("username") + " (" + data.get("email") + "): " +
+            equipment.join(", ") + ".";
+        });
+      });
+    </script>
   </body>
 </html>
