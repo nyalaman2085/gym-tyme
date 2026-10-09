@@ -1,49 +1,46 @@
-# GYM TYME
+# GYM TYME — Gym Equipment Landing Page
 
-Static landing page for a gym brand with separate desktop and mobile entry pages.
+Responsive static landing page concept with desktop and mobile layouts, product imagery, and a client-side equipment request preview.
 
-## Live Site
+## Demo
 
-Once GitHub Pages is enabled and the repository is pushed, the site will be available at:
+- Desktop: https://nyalaman2085.github.io/gym-tyme/
+- Mobile layout: https://nyalaman2085.github.io/gym-tyme/mobile.html
 
-`https://nyalaman2085.github.io/gym-tyme/`
+These URLs depend on GitHub Pages being enabled and the deployment workflow succeeding. Check the Actions tab for current deployment status.
 
-Mobile page:
+## Features
 
-`https://nyalaman2085.github.io/gym-tyme/mobile.html`
+- Separate desktop and mobile-focused pages
+- Responsive equipment cards and product imagery
+- Required name/email fields and equipment selection
+- Client-side request preview with accessible status feedback
 
-## Project Structure
+**Scope limitation:** the form is a frontend demo. It does not submit a real order, send email, reserve stock, or store personal information. Do not enter sensitive information.
 
-- `index.html` - main landing page
-- `mobile.html` - mobile-focused landing page
-- `css/style.css` - desktop styles
-- `css/mobile.css` - mobile styles
-- `images/` - logo assets
-- `.github/workflows/deploy-pages.yml` - GitHub Pages deployment workflow
+## Run locally
 
-## Run Locally
+From the repository root:
 
-This is a plain static site, so you can open it directly in a browser:
+\`\`\`bash
+python3 -m http.server 8000
+\`\`\`
 
-```bash
-open index.html
-open mobile.html
-```
+Open http://localhost:8000/ and http://localhost:8000/mobile.html.
 
-## Deploy With GitHub Pages
+## Project structure
 
-This repository includes a GitHub Actions workflow that deploys the site from the `main` branch.
+- \`index.html\` — main landing page
+- \`mobile.html\` — mobile-focused page
+- \`css/style.css\` — desktop styling
+- \`css/mobile.css\` — mobile styling
+- \`images/\` — logo assets
+- \`.github/workflows/deploy-pages.yml\` — GitHub Pages deployment
 
-1. Push this repository to GitHub.
-2. Open the repository on GitHub.
-3. Go to `Settings` -> `Pages`.
-4. Under `Build and deployment`, set `Source` to `GitHub Actions`.
-5. Push to `main` or run the `Deploy GitHub Pages` workflow manually from the `Actions` tab.
+## Tech stack
 
-After the workflow finishes, GitHub Pages will publish the site automatically.
+HTML5 · CSS · JavaScript · GitHub Pages
 
-## Notes
+## Next engineering step
 
-- `index.html` is the default homepage.
-- `mobile.html` is deployed as a second public route.
-- All internal asset links are relative, so the site works on GitHub Pages without code changes.
+A genuine booking flow would need a backend API, server-side validation, privacy notice, secure storage, and a confirmation mechanism. The current demo intentionally does not pretend to provide those services.
