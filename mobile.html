@@ -32,6 +32,7 @@
             type="text"
             name="username"
             placeholder="Name"
+            required
             autocomplete="name"
             aria-label="Name"
           />
@@ -39,23 +40,25 @@
             type="email"
             name="email"
             placeholder="Email"
+            required
             autocomplete="email"
             aria-label="Email"
           />
 
           <div class="gender-row">
-            <label><input type="radio" name="gender" checked /> Male</label>
-            <label><input type="radio" name="gender" /> Female</label>
+            <label><input type="radio" name="gender" value="Male" checked /> Male</label>
+            <label><input type="radio" name="gender" value="Female" /> Female</label>
           </div>
 
           <div class="check-grid">
-            <label><input type="checkbox" name="equipment" /> Weights</label>
-            <label><input type="checkbox" name="equipment" /> Dumbbells</label>
-            <label><input type="checkbox" name="equipment" /> Ropes</label>
-            <label><input type="checkbox" name="equipment" /> Shirts</label>
+            <label><input type="checkbox" name="equipment" value="Weights" /> Weights</label>
+            <label><input type="checkbox" name="equipment" value="Dumbbells" /> Dumbbells</label>
+            <label><input type="checkbox" name="equipment" value="Ropes" /> Ropes</label>
+            <label><input type="checkbox" name="equipment" value="Shirts" /> Shirts</label>
           </div>
 
-          <button type="submit">Book Your Equipment</button>
+          <button type="submit">Preview Equipment Request</button>
+          <p class="form-status" role="status" aria-live="polite"></p>
         </form>
       </section>
 
@@ -108,5 +111,22 @@
         </article>
       </section>
     </main>
+    <script>
+      document.querySelectorAll(".mobile-form").forEach((form) => {
+        form.addEventListener("submit", (event) => {
+          event.preventDefault();
+          const status = form.querySelector(".form-status");
+          const data = new FormData(form);
+          const equipment = data.getAll("equipment");
+          if (!equipment.length) {
+            status.textContent = "Choose at least one equipment item to preview your request.";
+            return;
+          }
+          status.textContent = "Demo preview only — no booking was sent. Request for " +
+            data.get("username") + " (" + data.get("email") + "): " +
+            equipment.join(", ") + ".";
+        });
+      });
+    </script>
   </body>
 </html>
