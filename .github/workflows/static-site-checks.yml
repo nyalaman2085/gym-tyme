@@ -1,0 +1,80 @@
+name: Static Site Checks
+
+on:
+  push:
+  pull_request:
+    branches: ["main"]
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Validate local HTML links and assets
+        run: |
+          python - <<'PY'
+          from html.parser import HTMLParser
+          from pathlib import Path
+          from urllib.parse import unquote, urlparse
+          import sys
+
+          class PageParser(HTMLParser):
+              def __init__(self):
+                  super().__init__()
+                  self.ids = set()
+                  self.refs = []
+              def handle_starttag(self, tag, attrs):
+                  attrs = dict(attrs)
+                  if attrs.get("id"):
+                      self.ids.add(attrs["id"])
+                  for attr in ("href", "src"):
+                      value = attrs.get(attr)
+                      if value:
+                          self.refs.append((tag, attr, value))
+
+          pages = {}
+          for file in Path(".").rglob("*.html"):
+              if any(part in {".git", "node_modules"} for part in file.parts):
+                  continue
+              parser = PageParser()
+              try:
+                  parser.feed(file.read_text(encoding="utf-8"))
+                  pages[file] = parser
+              except (UnicodeDecodeError, OSError) as exc:
+                  print(f"Could not read {file}: {exc}")
+                  sys.exit(1)
+
+          errors = []
+          for file, parser in pages.items():
+              for tag, attr, raw in parser.refs:
+                  url = urlparse(raw)
+                  if url.scheme or url.netloc or raw.startswith("data:") or raw == "#":
+                      continue
+                  path_text = unquote(url.path)
+                  target = (file.parent / path_text).resolve() if path_text else file.resolve()
+                  if target.is_dir():
+                      target = target / "index.html"
+                  try:
+                      target.relative_to(Path(".").resolve())
+                  except ValueError:
+                      continue
+                  if not target.exists():
+                      errors.append(f"{file}: missing local {attr} target {raw}")
+                      continue
+                  if url.fragment and target.suffix.lower() == ".html":
+                      target_path = Path(target.relative_to(Path(".").resolve()))
+                      target_parser = pages.get(target_path)
+                      if target_parser and unquote(url.fragment) not in target_parser.ids:
+                          errors.append(f"{file}: missing fragment #{url.fragment} in {target_path}")
+
+          if errors:
+              print("\n".join(errors))
+              sys.exit(1)
+          print(f"Checked {len(pages)} HTML files: local paths and fragments look valid.")
+          PY

@@ -322,3 +322,18 @@ main {
     font-size: 1.6rem;
   }
 }
+
+
+.form-status {
+  min-height: 1.4em;
+  margin: 0;
+  color: #245a37;
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+.form-status:empty { display: none; }
+.booking-form input:focus-visible,
+.booking-form button:focus-visible {
+  outline: 3px solid #245a37;
+  outline-offset: 3px;
+}
